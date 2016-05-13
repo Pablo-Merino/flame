@@ -29,4 +29,8 @@ module.exports = function (grunt) {
     var current = grunt.config('shipit.options.deployTo') + '/current';
     grunt.shipit.remote('cd ' + current + ' && forever start index.js', done);
   });
+
+  grunt.shipit.on('published', function () {
+    grunt.task.run(['start']);
+  });
 };

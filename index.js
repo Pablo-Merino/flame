@@ -12,8 +12,10 @@ const tar = require('tar-fs')
 const DockerLib = require('dockerode');
 const Handlebars = require('handlebars');
 
+var docker = null
+
 if(process.env.DEV) {
-  const docker = new DockerLib({
+  docker = new DockerLib({
     host:'192.168.99.100',
     port:2376,
     protocol: 'https',
@@ -22,7 +24,7 @@ if(process.env.DEV) {
     key: fs.readFileSync('/Users/pablo/.docker/machine/certs/key.pem')
   });
 } else {
-  const docker = new DockerLib({
+  docker = new DockerLib({
     socketPath: '/var/run/docker.sock'
   });
 }
