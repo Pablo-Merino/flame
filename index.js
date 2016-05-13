@@ -32,8 +32,6 @@ if(process.env.DEV) {
 const templateDockerfile = fs.readFileSync('./template_dockerfile')
 const templateNginxConf = fs.readFileSync('./template_nginx').toString()
 
-app.use(busboy())
-
 var writeNginxConf = (data) => {
   var template = Handlebars.compile(templateNginxConf)
   var compiledConf = template(data);
@@ -91,6 +89,12 @@ const publishApp = (filePath, cb) => {
     }); 
   });
 }
+
+app.use(busboy())
+
+app.get('/', (req, res) => {
+  res.json({ok: true})
+})
 
 app.post('/publish', (req, res) => {
   if(req.busboy) {
