@@ -23,4 +23,10 @@ module.exports = function (grunt) {
   grunt.registerTask('pwd', function () {
     grunt.shipit.remote('pwd', this.async());
   });
+
+  grunt.registerTask('start', function () {
+    var done = this.async();
+    var current = grunt.config('shipit.options.deployTo') + '/current';
+    grunt.shipit.remote('cd ' + current + ' && forever start index.js', done);
+  });
 };
