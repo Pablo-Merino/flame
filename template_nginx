@@ -26,5 +26,5 @@ server {
   }
 }
 upstream {{appName}} {
-  server 172.17.0.4:{{appPort}};
+  server 127.0.0.1:{{appPort}};
 }

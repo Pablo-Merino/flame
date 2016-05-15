@@ -32,6 +32,10 @@ if(process.env.DEV) {
 const templateDockerfile = fs.readFileSync('./template_dockerfile')
 const templateNginxConf = fs.readFileSync('./template_nginx').toString()
 
+var randomPortForDocker = () => {
+  return Math.floor(Math.random()*(50000-10000+1)+10000);
+}
+
 var writeNginxConf = (data) => {
   var template = Handlebars.compile(templateNginxConf)
   var compiledConf = template(data);
@@ -59,15 +63,16 @@ const pushToDocker = (path, name, cb) => {
 
       stream.on('end', function() {
         log(`${name} deployed to Docker!`)
+        var randomPort = randomPortForDocker()
         docker.run(name, [], null, {}, {
           'PortBindings': { 
-            '8080/tcp': [{ 'HostPort': '9000' }]
+            '8080/tcp': [{ 'HostPort': randomPort }]
           }
         }, (err, data, container) => {
           log(`${name} running!`);
           writeNginxConf({
             appName: name,
-            appPort: 9000
+            appPort: randomPort
           })
           cb(name)
         });
